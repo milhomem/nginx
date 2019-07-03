@@ -1,0 +1,27 @@
+server {
+  listen ${NGINX_PORT};
+
+  server_name ${NGINX_HOST};
+
+  client_max_body_size ${CLIENT_MAX_BODY_SIZE};
+  client_body_buffer_size 8k;
+  large_client_header_buffers 8 16k;
+
+  client_header_timeout 30;
+  client_body_timeout 30;
+  send_timeout 30;
+  keepalive_timeout 30;
+
+  root ${STATIC_FILES_ROOT};
+
+  index index.html index.htm;
+
+  # deny access to . files, for security
+  #
+  location ~ /\. {
+    log_not_found off;
+    deny all;
+  }
+
+  include /etc/nginx/conf.d/*.rules;
+}

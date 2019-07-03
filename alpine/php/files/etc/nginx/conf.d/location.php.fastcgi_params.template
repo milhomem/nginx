@@ -1,0 +1,7 @@
+fastcgi_param HTTP_X_REQUEST_START "t=${msec}";
+fastcgi_connect_timeout ${FASTCGI_CONNECT_TIMEOUT};
+fastcgi_send_timeout ${FASTCGI_SEND_TIMEOUT};
+fastcgi_read_timeout ${FASTCGI_READ_TIMEOUT};
+fastcgi_param PHP_VALUE "${PHP_VALUE}";
+fastcgi_buffers 16 16k;
+fastcgi_buffer_size 32k;

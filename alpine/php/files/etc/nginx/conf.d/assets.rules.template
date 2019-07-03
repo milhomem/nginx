@@ -1,0 +1,6 @@
+# Cache static assets
+location ~ \.(jpg|jpeg|png|gif|ico|css|js) {
+    expires modified 10d;
+    log_not_found off;
+    try_files $uri =404;
+}
