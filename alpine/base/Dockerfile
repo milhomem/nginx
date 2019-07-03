@@ -1,5 +1,7 @@
 FROM nginx:1.17-alpine
 
+MAINTAINER Marcelo Milhomem <milhomem.is4web@gmail.com>
+
 WORKDIR /usr/share/nginx/html
 
 ADD files/etc /etc
