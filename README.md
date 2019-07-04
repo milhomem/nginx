@@ -12,8 +12,9 @@ In addition, I could not agree with solutions like:
 Then decided to use what is recommended at [official nginx](https://hub.docker.com/_/nginx) with some help from 
 [JavaCS3](https://github.com/JavaCS3) on [Github](https://github.com/docker-library/docs/issues/496)  
 
-The **goal** is to never have to create build an image for Nginx for changing the configuration file. If you cannot
-deal with mounted volumes, you might want to build it to add complex configurations or add files, e.g. static images.
+The **goal** is to never have to create build an image for Nginx only for changing the configuration file. However,
+if you need to server static files you will have to deal with volumes, or you build your image to add files or 
+add extra templates. 
 
 There's a lot to do, but I will start lean and iterate on a per request basis.
 
@@ -97,42 +98,62 @@ ADD src .
 
 > Note: Your templates can still use variables to be replaced by envvars, making your image as flexible as this one.
 
-### Using environment variables in nginx configuration
+### Using environment variables in Nginx configuration
 
-Out-of-the-box, nginx doesn't support environment variables inside most configuration blocks. But `envsubst` may be used as a workaround if you need to generate your nginx configuration dynamically before nginx starts.
+Out-of-the-box, Nginx doesn't support environment variables inside most configuration blocks, 
+but `envsubst` may be used as a workaround if you need to generate your Nginx configuration dynamically 
+before Nginx starts.
 
 Here is a few examples using docker-compose.yml:
 
 ```yaml
-web:
-  image: milhomem/nginx:php
-  ports:
-   - "8080:80"
-  environment:
-     FASTCGI_HOST: fcgi
-     
-fcgi:
-  image: php:7.2-fpm
+version: '3'
+
+services:
+  nginx:
+    image: milhomem/nginx:php
+    ports:
+     - "8080:80"
+    environment:
+       FASTCGI_HOST: "hello_world_app"
+       STATIC_FILES_ROOT: "/app"
+       
+  hello_world_app:
+    image: php:7.3-fpm
+    command: |
+          sh -c "
+          mkdir /app;
+          echo '<?php print \"<h1>Hello World</h1>\" ?>' > /app/index.php;
+          php-fpm
+          "
 ```
 
 ```yaml
-web:
-  image: milhomem/nginx:php
-  ports:
-   - "8080:8081"
-  environment:
-     NGINX_HOST: localhost
-     NGINX_PORT: 8081
-     STATIC_FILES_ROOT: /var/www
-     FASTCGI_HOST: fcgi
-     PHP_VALUE: "date.timezone=GMT\nmax_execution_time=30"
-     CLIENT_MAX_BODY_SIZE: 10m
-     FASTCGI_CONNECT_TIMEOUT: 5
-     FASTCGI_SEND_TIMEOUT: 5
-     FASTCGI_READ_TIMEOUT: 5
-     
-fcgi:
-  image: php:7.2-fpm
+version: '3'
+
+services:
+  web:
+    image: milhomem/nginx:php
+    ports:
+     - "8080:8081"
+    environment:
+       NGINX_HOST: "localhost"
+       NGINX_PORT: "8081"
+       STATIC_FILES_ROOT: "/var/www"
+       FASTCGI_HOST: "fcgi"
+       PHP_VALUE: "date.timezone=GMT\nmax_execution_time=30"
+       CLIENT_MAX_BODY_SIZE: "10m"
+       FASTCGI_CONNECT_TIMEOUT: "5"
+       FASTCGI_SEND_TIMEOUT: "5"
+       FASTCGI_READ_TIMEOUT: "5"
+
+  fcgi:
+    image: php:7.3-fpm
+    volumes:
+      - "source_code:/var/www"
+volumes:
+  source_code:
+    driver: local
 ```
 
 # Image Variants
