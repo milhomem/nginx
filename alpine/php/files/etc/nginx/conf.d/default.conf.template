@@ -31,7 +31,7 @@ server {
 
     include fastcgi_params;
 
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param SCRIPT_FILENAME ${FASTCGI_FILES_ROOT}$fastcgi_script_name;
 
     include /etc/nginx/conf.d/*.fastcgi_params;
   }

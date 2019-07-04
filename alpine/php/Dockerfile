@@ -7,10 +7,11 @@ WORKDIR /usr/share/nginx/html
 ADD files/etc /etc
 
 # Default values for supported variables
-ENV NGINX_PORT=80 \
+ENV CLIENT_MAX_BODY_SIZE=1m \
+    NGINX_PORT=80 \
     NGINX_HOST=_ \
-    CLIENT_MAX_BODY_SIZE=1m \
-    STATIC_FILES_ROOT=/usr/share/nginx/html \
+    STATIC_FILES_ROOT=/app/public \
+    FASTCGI_FILES_ROOT=/app \
     FASTCGI_HOST=localhost \
     FASTCGI_PORT=9000 \
     FASTCGI_CONNECT_TIMEOUT=60 \

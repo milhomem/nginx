@@ -61,10 +61,11 @@ docker exec some-nginx cat /etc/nginx/conf.d/default.conf
 
 Currently, these are the available variables, but they will depend on the tag you use:
 
+- CLIENT_MAX_BODY_SIZE
 - NGINX_PORT
 - NGINX_HOST
-- CLIENT_MAX_BODY_SIZE
 - STATIC_FILES_ROOT
+- FASTCGI_FILES_ROOT
 - FASTCGI_HOST
 - FASTCGI_PORT
 - FASTCGI_CONNECT_TIMEOUT
@@ -116,14 +117,14 @@ services:
      - "8080:80"
     environment:
        FASTCGI_HOST: "hello_world_app"
-       STATIC_FILES_ROOT: "/app"
+       FASTCGI_FILES_ROOT: "/app"
        
   hello_world_app:
     image: php:7.3-fpm
     command: |
           sh -c "
           mkdir /app;
-          echo '<?php print \"<h1>Hello World</h1>\" ?>' > /app/index.php;
+          echo '<?php phpinfo(); ?>' > /app/index.php;
           php-fpm
           "
 ```
@@ -139,7 +140,7 @@ services:
     environment:
        NGINX_HOST: "localhost"
        NGINX_PORT: "8081"
-       STATIC_FILES_ROOT: "/var/www"
+       FASTCGI_FILES_ROOT: "/var/www"
        FASTCGI_HOST: "fcgi"
        PHP_VALUE: "date.timezone=GMT\nmax_execution_time=30"
        CLIENT_MAX_BODY_SIZE: "10m"
