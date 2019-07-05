@@ -21,7 +21,8 @@ There's a lot to do, but I will start lean and iterate on a per request basis.
 # Supported tags and respective `Dockerfile` links
 
 -	[`latest`](https://github.com/milhomem/nginx/blob/master/alpine/base/Dockerfile)
--	[`php`](https://github.com/milhomem/nginx/blob/master/alpine/php/Dockerfile)
+-	[`php`, `1.17-alpine-php`](https://github.com/milhomem/nginx/blob/master/alpine/php/Dockerfile)
+-	[`1.17-alpine-php-1.0`](https://github.com/milhomem/nginx/blob/e66e777ad9d4b648b480d7fc11a2903dd893f0d6/alpine/php/Dockerfile)
 
 # What is nginx?
 
