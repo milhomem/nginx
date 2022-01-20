@@ -1,4 +1,4 @@
-FROM nginx:1.17-alpine
+FROM nginx:1.21.4-alpine
 
 MAINTAINER Marcelo Milhomem <milhomem.is4web@gmail.com>
 
