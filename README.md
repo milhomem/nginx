@@ -20,9 +20,10 @@ There's a lot to do, but I will start lean and iterate on a per request basis.
 
 # Supported tags and respective `Dockerfile` links
 
--	[`latest`](https://github.com/milhomem/nginx/blob/master/alpine/base/Dockerfile)
--	[`php`, `1.17-alpine-php`](https://github.com/milhomem/nginx/blob/master/alpine/php/Dockerfile)
--	[`1.17-alpine-php-1.0`](https://github.com/milhomem/nginx/blob/e66e777ad9d4b648b480d7fc11a2903dd893f0d6/alpine/php/Dockerfile)
+- [`latest`](https://github.com/milhomem/nginx/blob/master/alpine/base/Dockerfile)
+- [`1.21-alpine`](https://github.com/milhomem/nginx/blob/master/alpine/base/Dockerfile)
+- [`php`, `1.21-alpine-php`](https://github.com/milhomem/nginx/blob/master/alpine/php/Dockerfile)
+- [`1.17-alpine-php-1.0`](https://github.com/milhomem/nginx/blob/e66e777ad9d4b648b480d7fc11a2903dd893f0d6/alpine/php/Dockerfile)
 
 # What is nginx?
 
@@ -186,3 +187,27 @@ If you need more flavors that you know are very common, please file a new issue 
 
 Get in touch [@milmeninos](https://twitter.com/milmeninos) if you want to be part of the project, 
 if you have suggestions please file an issue or create an PR.
+
+# Building the images
+
+We need to be mindful that people run docker in to multiple platforms and we will support all that our base
+image supports.
+
+To build the image run the following command:
+
+```shell
+docker buildx build \
+  --push \
+  --platform linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x,linux/386 \
+  --tag milhomem/nginx:latest \
+  --tag milhomem/nginx:1.21-alpine \
+  alpine/base
+
+docker buildx build \
+  --push \
+  --platform linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x,linux/386 \
+  --tag milhomem/nginx:php \
+  --tag milhomem/nginx:1.21-alpine-php \
+  --tag milhomem/nginx:1.21-alpine-php-1.0 \
+  alpine/php
+```
